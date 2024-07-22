@@ -1,4 +1,4 @@
-import { ComponentFactory, DataListAttr, MinMaxLengthAttr, PlaceholderAttr, mixinDOMAttributes } from "@vanilla-ts/core";
+import { ComponentFactory, DataListAttr, MinMaxLengthAttr, PatternAttr, PlaceholderAttr, SizeAttr, mixinDOMAttributes } from "@vanilla-ts/core";
 import { Input } from "./Input.js";
 
 
@@ -30,18 +30,22 @@ export class TextInput<EventMap extends HTMLElementEventMap = HTMLElementEventMa
         /** Mixin additional DOM attributes. */
         mixinDOMAttributes(
             TextInput,
+            DataListAttr<HTMLInputElement>,
             MinMaxLengthAttr<HTMLInputElement>,
+            PatternAttr<HTMLInputElement>,
             PlaceholderAttr<HTMLInputElement>,
-            DataListAttr<HTMLInputElement>
+            SizeAttr<HTMLInputElement>
         );
     }
 }
 
 /** Augment class definition with the DOM attributes introduced by `mixinDOMAttributes()` above. */
 export interface TextInput<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
+    DataListAttr<HTMLInputElement, EventMap>,
     MinMaxLengthAttr<HTMLInputElement, EventMap>,
-    PlaceholderAttr<HTMLInputElement, EventMap>,
-    DataListAttr<HTMLInputElement, EventMap> { }
+    PatternAttr<HTMLInputElement, EventMap>,
+    SizeAttr<HTMLInputElement, EventMap>,
+    PlaceholderAttr<HTMLInputElement, EventMap> { }
 
 /**
  * Factory for TextInput components.

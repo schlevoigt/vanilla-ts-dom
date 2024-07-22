@@ -95,18 +95,18 @@ export class TemporalInput<EventMap extends HTMLElementEventMap = HTMLElementEve
         /** Mixin additional DOM attributes. */
         mixinDOMAttributes(
             TemporalInput,
+            DataListAttr<HTMLInputElement>,
             MinMaxAttr<HTMLInputElement>,
             StepAttr<HTMLInputElement>,
-            DataListAttr<HTMLInputElement>
         );
     }
 }
 
 /** Augment class definition with the DOM attributes introduced by `mixinDOMAttributes()` above. */
 export interface TemporalInput<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
+    DataListAttr<HTMLInputElement, EventMap>,
     MinMaxAttr<HTMLInputElement, EventMap>,
-    StepAttr<HTMLInputElement, EventMap>,
-    DataListAttr<HTMLInputElement, EventMap> { }
+    StepAttr<HTMLInputElement, EventMap> { }
 
 /**
  * Factory for TemporalInput components.
