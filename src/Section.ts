@@ -2,12 +2,12 @@ import { ComponentFactory, ElementComponentWithChildren, Phrase } from "@vanilla
 
 
 /**
- * Section component (`<Section>`).
+ * Section component (`<section>`).
  */
 export class Section<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends ElementComponentWithChildren<HTMLElement, EventMap> {
     /**
      * Create Section component.
-     * @param phrase The phrasing content for the `<Section>` element.
+     * @param phrase The phrasing content for the `<section>` element.
      */
     constructor(...phrase: Phrase[]) {
         super("section");
@@ -21,11 +21,11 @@ export class Section<EventMap extends HTMLElementEventMap = HTMLElementEventMap>
 export class SectionFactory<T> extends ComponentFactory<Section> {
     /**
      * Create, set up and return Section component.
-     * @param phrase The phrasing content for the `<Section>` element.
+     * @param phrase The phrasing content for the `<section>` element.
      * @param data Optional arbitrary data passed to the `setupComponent()` function of the factory.
      * @returns Section component.
      */
-    public Section(phrase?: Phrase | Phrase[], data?: T): Section {
+    public section(phrase?: Phrase | Phrase[], data?: T): Section {
         return this.setupComponent(
             !phrase
                 ? new Section()
