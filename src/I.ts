@@ -1,31 +1,38 @@
-import { ComponentFactory, ElementComponentWithChildren } from "@vanilla-ts/core";
+import { ComponentFactory, ElementComponentWithChildren, Phrase } from "@vanilla-ts/core";
 
 
 /**
  * I component (`<i>`).
  */
-export class I extends ElementComponentWithChildren<HTMLElement> {
+export class I<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends ElementComponentWithChildren<HTMLElement, EventMap> {
     /**
-     * Create <i> component.
-     * @param text The text content for the i element.
+     * Create I component.
+     * @param phrase The phrasing content for the `<i>` element.
      */
-    constructor(text?: string) {
+    constructor(...phrase: Phrase[]) {
         super("i");
-        !text || this.text(text);
+        !phrase || this.phrase(...phrase);
     }
 }
 
 /**
- * Factory for `<i>` based components.
+ * Factory for I components.
  */
 export class IFactory<T> extends ComponentFactory<I> {
     /**
      * Create, set up and return I component.
-     * @param text The text content for the i element.
+     * @param phrase The phrasing content for the `<i>` element.
      * @param data Optional arbitrary data passed to the `setupComponent()` function of the factory.
      * @returns I component.
      */
-    public i(text?: string, data?: T): I {
-        return this.setupComponent(new I(text), data);
+    public i(phrase?: Phrase | Phrase[], data?: T): I {
+        return this.setupComponent(
+            !phrase
+                ? new I()
+                : Array.isArray(phrase)
+                    ? new I(...phrase)
+                    : new I(phrase),
+            data
+        );
     }
 }

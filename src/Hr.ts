@@ -4,9 +4,9 @@ import { ComponentFactory, ElementComponentVoid } from "@vanilla-ts/core";
 /**
  * Hr component (`<hr>`).
  */
-export class Hr extends ElementComponentVoid<HTMLHRElement> {
+export class Hr<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends ElementComponentVoid<HTMLHRElement, EventMap> {
     /**
-     * Create `<hr>` component.
+     * Create Hr component.
      */
     constructor() {
         super("hr");
@@ -14,7 +14,7 @@ export class Hr extends ElementComponentVoid<HTMLHRElement> {
 }
 
 /**
- * Factory for `<hr>` based components.
+ * Factory for Hr components.
  */
 export class HrFactory<T> extends ComponentFactory<Hr> {
     /**

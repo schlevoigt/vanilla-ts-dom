@@ -2,7 +2,7 @@ import { ElementComponentVoid, HTMLInputTypes, NameAttr, NativeDisabledAttr, Rea
 
 
 /**
- * Abstract base input component (`<input>`).\
+ * Abstract base Input component (`<input>`).\
  * __Note:__ This class has mixins for the properties `readonly`, `required` and `value`, however,
  * some input elements don't support these attributes, but since the vast majority supports them,
  * they are included here. Nevertheless some derived classes may have to override properties, e.g.
@@ -12,7 +12,7 @@ export abstract class Input<EventMap extends HTMLElementEventMap = HTMLElementEv
     protected type: HTMLInputTypes;
 
     /**
-     * Builds the `input` component.
+     * Create Input component.
      * @param type The type (attribute) of the input component.
      * @param id The id (attribute) of the input component.
      * @param value The value of the input element.
@@ -24,8 +24,9 @@ export abstract class Input<EventMap extends HTMLElementEventMap = HTMLElementEv
         this._dom.type = this.type;
         !id || this.id(id);
         // Otherwise this will be "on" (for checkboxes, radiobuttons, ...).
-        this.value(value ? value : ""); // eslint-disable-line @typescript-eslint/no-unsafe-call
-        !name || this.name(name); // eslint-disable-line @typescript-eslint/no-unsafe-call
+        // this.value(value ? value : ""); // eslint-disable-line @typescript-eslint/no-unsafe-call
+        !value || this.value(value);
+        !name || this.name(name);
     }
 
     /**
@@ -34,17 +35,19 @@ export abstract class Input<EventMap extends HTMLElementEventMap = HTMLElementEv
     public get Type(): HTMLInputTypes {
         return this.type;
     }
-}
 
-/** Mixin additional DOM attributes */
-mixinDOMAttributes(
-    Input,
-    NameAttr<HTMLInputElement>,
-    ValueAttr<HTMLInputElement>,
-    NativeDisabledAttr<HTMLInputElement>,
-    RequiredAttr<HTMLInputElement>,
-    ReadonlyAttr<HTMLInputElement>
-);
+    static {
+        /** Mixin additional DOM attributes. */
+        mixinDOMAttributes(
+            Input,
+            NameAttr<HTMLInputElement>,
+            ValueAttr<HTMLInputElement>,
+            NativeDisabledAttr<HTMLInputElement>,
+            RequiredAttr<HTMLInputElement>,
+            ReadonlyAttr<HTMLInputElement>
+        );
+    }
+}
 
 /** Augment class definition with the DOM attributes introduced by `mixinDOMAttributes()` above. */
 export interface Input<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging

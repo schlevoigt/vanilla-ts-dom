@@ -2,6 +2,7 @@ export * from "./B.js";
 export * from "./Br.js";
 export * from "./Button.js";
 export * from "./Checkbox.js";
+export * from "./Comment.js";
 export * from "./Div.js";
 export * from "./Em.js";
 export * from "./Fragment.js";
