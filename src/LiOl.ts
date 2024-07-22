@@ -1,46 +1,55 @@
-import { ComponentFactory, ElementComponentWithChildren, ValueAttr, mixinDOMAttributes } from "@vanilla-ts/core";
+import { ComponentFactory, ElementComponentWithChildren, Phrase, ValueAttr, mixinDOMAttributes } from "@vanilla-ts/core";
 
 
 /**
  * List item component (`<li>`) for ordered lists (`<ol>`).
  */
-export class LiOl extends ElementComponentWithChildren<HTMLLIElement> { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
+export class LiOl<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends ElementComponentWithChildren<HTMLLIElement, EventMap> { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
     /**
-     * Create <li> component.
-     * @param text The text content for the li element.
-     * @param value The numeric value for the li element.
+     * Create LiOl component.
+     * @param value The numeric value for the `<li>` element.
+     * @param phrase The phrasing content for the `<li>` element.
      */
-    constructor(text?: string, value?: number) {
+    constructor(value?: number, ...phrase: Phrase[]) {
         super("li");
-        !text || this.text(text);
         value !== undefined
             ? this.value(value)
             : undefined;
+        !phrase || this.phrase(...phrase);
+    }
+
+    static {
+        /** Mixin additional DOM attributes. */
+        mixinDOMAttributes(
+            LiOl,
+            ValueAttr<HTMLLIElement>
+        );
     }
 }
 
-/** Mixin additional DOM attributes */
-mixinDOMAttributes(
-    LiOl,
-    ValueAttr<HTMLLIElement>
-);
-
 /** Augment class definition with the DOM attributes introduced by `mixinDOMAttributes()` above. */
-export interface LiOl extends // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
-    ValueAttr<HTMLLIElement> { }
+export interface LiOl<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
+    ValueAttr<HTMLLIElement, EventMap> { }
 
 /**
- * Factory for `<li>` based components (for ordered lists (`<ol>`)).
+ * Factory for LiOl components (for ordered lists (`<ol>`)).
  */
 export class LiOlFactory<T> extends ComponentFactory<LiOl> {
     /**
      * Create, set up and return LiOl component.
-     * @param text The text content for the li element.
-     * @param value The numeric value for the li element.
+     * @param value The numeric value for the `<li>` element.
+     * @param phrase The phrasing content for the `<li>` element.
      * @param data Optional arbitrary data passed to the `setupComponent()` function of the factory.
      * @returns LiOl component.
      */
-    public liOl(text?: string, value?: number, data?: T): LiOl {
-        return this.setupComponent(new LiOl(text, value), data);
+    public liOl(value?: number, phrase?: Phrase | Phrase[], data?: T): LiOl {
+        return this.setupComponent(
+            !phrase
+                ? new LiOl(value)
+                : Array.isArray(phrase)
+                    ? new LiOl(value, ...phrase)
+                    : new LiOl(value, phrase),
+            data
+        );
     }
 }

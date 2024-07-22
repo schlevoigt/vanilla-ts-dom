@@ -3,11 +3,11 @@ import { LiUl } from "./LiUl.js";
 
 
 /**
- * Unordered list component (`<ul>`).
+ * Unordered list component Ul (`<ul>`).
  */
-export class Ul extends ElementComponentWithChildren<HTMLUListElement> {
+export class Ul<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends ElementComponentWithChildren<HTMLUListElement, EventMap> {
     /**
-     * Create `<ul>` component.
+     * Create Ul component.
      * @param listItems Unordered list items to be appended to this list.
      */
     constructor(listItems: LiUl[]) {
@@ -17,7 +17,7 @@ export class Ul extends ElementComponentWithChildren<HTMLUListElement> {
 }
 
 /**
- * Factory for `<ul>` based components.
+ * Factory for Ul components.
  */
 export class UlFactory extends ComponentFactory<Ul> {
     /**

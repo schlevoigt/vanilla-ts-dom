@@ -8,11 +8,11 @@ import { LiOl } from "./LiOl.js";
 type ListItemType = "a" | "A" | "i" | "I" | 1 | null;
 
 /**
- * Ordered list component (`<ol>`).
+ * Ordered list component Ol (`<ol>`).
  */
-export class Ol extends ElementComponentWithChildren<HTMLOListElement> {
+export class Ol<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends ElementComponentWithChildren<HTMLOListElement, EventMap> {
     /**
-     * Create `<ol>` component.
+     * Create Ol component.
      * @param listItems Ordered list items to be appended to this list.
      */
     constructor(listItems: LiOl[]) {
@@ -99,7 +99,7 @@ export class Ol extends ElementComponentWithChildren<HTMLOListElement> {
 }
 
 /**
- * Factory for `<ol>` based components.
+ * Factory for Ol components.
  */
 export class OlFactory<T> extends ComponentFactory<Ol> {
     /**

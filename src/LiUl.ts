@@ -1,31 +1,38 @@
-import { ComponentFactory, ElementComponentWithChildren } from "@vanilla-ts/core";
+import { ComponentFactory, ElementComponentWithChildren, Phrase } from "@vanilla-ts/core";
 
 
 /**
  * List item component (`<li>`) for unordered lists (`<ul>`).
  */
-export class LiUl extends ElementComponentWithChildren<HTMLLIElement> {
+export class LiUl<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends ElementComponentWithChildren<HTMLLIElement, EventMap> {
     /**
-     * Create `<li>` component.
-     * @param text The text content for the li element.
+     * Create LiUl component.
+     * @param phrase The phrasing content for the `<li>` element.
      */
-    constructor(text?: string) {
+    constructor(...phrase: Phrase[]) {
         super("li");
-        !text || this.text(text);
+        !phrase || this.phrase(...phrase);
     }
 }
 
 /**
- * Factory for `<li>` based components (for unordered lists (`<ul>`)).
+ * Factory for LiUl components (for unordered lists (`<ul>`)).
  */
 export class LiUlFactory<T> extends ComponentFactory<LiUl> {
     /**
      * Create, set up and return LiUl component.
-     * @param text The text content for the li element.
+     * @param phrase The phrasing content for the `<li>` element.
      * @param data Optional arbitrary data passed to the `setupComponent()` function of the factory.
      * @returns LiUl component.
      */
-    public liUl(text?: string, data?: T): LiUl {
-        return this.setupComponent(new LiUl(text), data);
+    public liUl(phrase?: Phrase | Phrase[], data?: T): LiUl {
+        return this.setupComponent(
+            !phrase
+                ? new LiUl()
+                : Array.isArray(phrase)
+                    ? new LiUl(...phrase)
+                    : new LiUl(phrase),
+            data
+        );
     }
 }

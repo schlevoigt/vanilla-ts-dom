@@ -4,9 +4,9 @@ import { ComponentFactory, ElementComponentVoid } from "@vanilla-ts/core";
 /**
  * Br component (`<br>`).
  */
-export class Br extends ElementComponentVoid<HTMLBRElement> {
+export class Br<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends ElementComponentVoid<HTMLBRElement, EventMap> {
     /**
-     * Create `<br>` component.
+     * Create Br component.
      */
     constructor() {
         super("br");
@@ -14,7 +14,7 @@ export class Br extends ElementComponentVoid<HTMLBRElement> {
 }
 
 /**
- * Factory for `<br>` based components.
+ * Factory for Br components.
  */
 export class BrFactory<T> extends ComponentFactory<Br> {
     /**

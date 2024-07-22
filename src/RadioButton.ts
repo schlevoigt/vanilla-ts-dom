@@ -1,4 +1,4 @@
-import { CheckedAttr, CheckedEvent, ComponentFactory, mixinDOMAttributes } from "@vanilla-ts/core";
+import { CheckedAttr, CheckedEvent, ComponentFactory, DEFAULT_EVENT_INIT_DICT, mixinDOMAttributes } from "@vanilla-ts/core";
 import { Input } from "./Input.js";
 
 
@@ -14,11 +14,11 @@ export interface RadioButtonEventMap extends HTMLElementEventMap {
  * Radio button component (`<input type="radio">`)  extended with a 'Checked' getter/setter and set
  * method and also with a custom event `checked` that signals checking/unchecking the radio button.
  */
-export class RadioButton extends Input<RadioButtonEventMap> { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
+export class RadioButton<EventMap extends RadioButtonEventMap = RadioButtonEventMap> extends Input<EventMap> { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
     protected _toggle: boolean = false;
 
     /**
-     * Builds the radio button component.
+     * Create RadioButton component.
      * @param id The id (attribute) of the radio button.
      * @param value The value of the radio button.
      * @param name The name (attribute) of the radio button.
@@ -30,12 +30,14 @@ export class RadioButton extends Input<RadioButtonEventMap> { // eslint-disable-
         this.on("keyup", this.#onSpaceOrEnter.bind(this));
         this.on("click", this.#onClick.bind(this));
         // Emit additional `checked` event on changes.
-        this.on("change", () => this._dom.dispatchEvent(new CheckedEvent(
-            "checked",
-            this,
-            /* eslint-disable jsdoc/require-jsdoc */
-            { Checked: this._dom.checked },
-            { bubbles: true, cancelable: false, composed: true })
+        this.on("change", () => this.emit(
+            new CheckedEvent(
+                "checked",
+                this,
+                /* eslint-disable jsdoc/require-jsdoc */
+                { Checked: this._dom.checked },
+                DEFAULT_EVENT_INIT_DICT
+            )
             /* eslint-enable */
         ));
     }
@@ -126,27 +128,29 @@ export class RadioButton extends Input<RadioButtonEventMap> { // eslint-disable-
      * Emit `input` and `change` events.
      */
     #emitEvents(): void {
-        this._dom.dispatchEvent(new Event("input", { bubbles: true, cancelable: false, composed: true })); // eslint-disable-line jsdoc/require-jsdoc
-        this._dom.dispatchEvent(new Event("change", { bubbles: true, cancelable: false, composed: false })); // eslint-disable-line jsdoc/require-jsdoc
+        this.emit(new Event("input", DEFAULT_EVENT_INIT_DICT));
+        this.emit(new Event("change", DEFAULT_EVENT_INIT_DICT));
+    }
+
+    static {
+        /** Mixin additional DOM attributes. */
+        mixinDOMAttributes(
+            RadioButton,
+            CheckedAttr<HTMLInputElement, RadioButtonEventMap>
+        );
     }
 }
 
-/** Mixin additional DOM attributes */
-mixinDOMAttributes(
-    RadioButton,
-    CheckedAttr<HTMLInputElement, RadioButtonEventMap>
-);
-
 /** Augment class definition with the DOM attributes introduced by `mixinDOMAttributes()` above. */
-export interface RadioButton extends // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
-    CheckedAttr<HTMLInputElement, RadioButtonEventMap> { }
+export interface RadioButton<EventMap extends RadioButtonEventMap = RadioButtonEventMap> extends // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
+    CheckedAttr<HTMLInputElement, EventMap> { }
 
 /**
- * Factory for `<input type="radio">` components.
+ * Factory for RadioButton components.
  */
 export class RadioButtonFactory<T> extends ComponentFactory<RadioButton> {
     /**
-     * Create and return RadioButton component.
+     * Create, set up and return RadioButton component.
      * @param id The id (attribute) of the radio button.
      * @param value The value of the radio button.
      * @param name The name (attribute) of the radio button.

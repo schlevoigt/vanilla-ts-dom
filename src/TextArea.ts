@@ -4,21 +4,25 @@ import { ComponentFactory, ElementComponentWithChildren, MinMaxLengthAttr, mixin
 /**
  * Textarea component (`<textarea>`).
  */
-export class TextArea extends ElementComponentWithChildren<HTMLTextAreaElement> { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
+export class TextArea<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends ElementComponentWithChildren<HTMLTextAreaElement, EventMap> { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
     protected _rows: number;
     protected _cols: number;
 
     /**
-     * Create `<textarea>` component.
+     * Create TextArea component.
      * @param text The text content for the textarea element.
      * @param rows The number of visible text lines for the control.
-     * @param cols The visible width of the text control, in average character widths..
+     * @param cols The visible width of the text control, in average character widths.
+     * @param id The `id` attribute for the textarea element.
+     * @param name The `name` attribute for the textarea element.
      */
-    constructor(text?: string, rows?: number, cols?: number) {
+    constructor(text?: string, rows?: number, cols?: number, id?: string, name?: string) {
         super("textarea");
         this.rows(rows !== undefined ? Math.max(rows, 1) : 2)
             .cols(cols !== undefined ? Math.max(cols, 1) : 20);
         !text || this.text(text);
+        !id || this.id(id);
+        !name || this.name(name);
     }
 
     /**
@@ -87,43 +91,47 @@ export class TextArea extends ElementComponentWithChildren<HTMLTextAreaElement> 
         this._dom.defaultValue = v;
         return this;
     }
+
+    static {
+        /** Mixin additional DOM attributes. */
+        mixinDOMAttributes(
+            TextArea,
+            MinMaxLengthAttr<HTMLTextAreaElement>,
+            NameAttr<HTMLTextAreaElement>,
+            PlaceholderAttr<HTMLTextAreaElement>,
+            NativeDisabledAttr<HTMLTextAreaElement>,
+            ReadonlyAttr<HTMLTextAreaElement>,
+            RequiredAttr<HTMLTextAreaElement>,
+            ValueAttr<HTMLTextAreaElement>
+        );
+    }
 }
 
-/** Mixin additional DOM attributes */
-mixinDOMAttributes(
-    TextArea,
-    MinMaxLengthAttr<HTMLTextAreaElement>,
-    NameAttr<HTMLTextAreaElement>,
-    PlaceholderAttr<HTMLTextAreaElement>,
-    NativeDisabledAttr<HTMLTextAreaElement>,
-    ReadonlyAttr<HTMLTextAreaElement>,
-    RequiredAttr<HTMLTextAreaElement>,
-    ValueAttr<HTMLTextAreaElement>
-);
-
 /** Augment class definition with the DOM attributes introduced by `mixinDOMAttributes()` above. */
-export interface TextArea extends // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
-    MinMaxLengthAttr<HTMLTextAreaElement>,
-    NameAttr<HTMLTextAreaElement>,
-    PlaceholderAttr<HTMLTextAreaElement>,
-    NativeDisabledAttr<HTMLTextAreaElement>,
-    ReadonlyAttr<HTMLTextAreaElement>,
-    RequiredAttr<HTMLTextAreaElement>,
-    ValueAttr<HTMLTextAreaElement> { }
+export interface TextArea<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
+    MinMaxLengthAttr<HTMLTextAreaElement, EventMap>,
+    NameAttr<HTMLTextAreaElement, EventMap>,
+    PlaceholderAttr<HTMLTextAreaElement, EventMap>,
+    NativeDisabledAttr<HTMLTextAreaElement, EventMap>,
+    ReadonlyAttr<HTMLTextAreaElement, EventMap>,
+    RequiredAttr<HTMLTextAreaElement, EventMap>,
+    ValueAttr<HTMLTextAreaElement, EventMap> { }
 
 /**
- * Factory for `<textarea>` based components.
+ * Factory for TextArea components.
  */
 export class TextAreaFactory<T> extends ComponentFactory<TextArea> {
     /**
      * Create, set up and return TextArea component.
      * @param text The text content for the textarea element.
      * @param rows The number of visible text lines for the control.
-     * @param cols The visible width of the text control, in average character widths..
+     * @param cols The visible width of the text control, in average character widths.
+     * @param id The `id` attribute for the textarea element.
+     * @param name The `name` attribute for the textarea element.
      * @param data Optional arbitrary data passed to the `setupComponent()` function of the factory.
      * @returns TextArea component.
      */
-    public textArea(text?: string, rows?: number, cols?: number, data?: T): TextArea {
-        return this.setupComponent(new TextArea(text, rows, cols), data);
+    public textArea(text?: string, rows?: number, cols?: number, id?: string, name?: string, data?: T): TextArea {
+        return this.setupComponent(new TextArea(text, rows, cols, id, name), data);
     }
 }
