@@ -1,12 +1,13 @@
-import { ElementComponentVoid, HTMLInputTypes, NameAttr, NativeDisabledAttr, ReadonlyAttr, RequiredAttr, ValueAttr, mixinDOMAttributes } from "@vanilla-ts/core";
+import { DirnameAttr, ElementComponentVoid, HTMLInputTypes, NameAttr, NativeDisabledAttr, ReadonlyAttr, RequiredAttr, ValueAttr, mixinDOMAttributes } from "@vanilla-ts/core";
 
 
 /**
  * Abstract base Input component (`<input>`).\
- * __Note:__ This class has mixins for the properties `readonly`, `required` and `value`, however,
- * some input elements don't support these attributes, but since the vast majority supports them,
- * they are included here. Nevertheless some derived classes may have to override properties, e.g.
- * `readonly` isn't supported for checkboxes.
+ * __Note:__ This class has mixins for the properties `readonly`, `required`, `dirName` and `value`,
+ * however, some input elements don't support these attributes, but since the vast majority supports
+ * them, they are included here. Nevertheless some derived classes may have to override properties,
+ * e.g. `readonly` isn't supported for checkboxes and `dirName` isn't supported for `datetime-local`
+ * elements.
  */
 export abstract class Input<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends ElementComponentVoid<HTMLInputElement, EventMap> { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
     protected type: HTMLInputTypes;
@@ -40,6 +41,7 @@ export abstract class Input<EventMap extends HTMLElementEventMap = HTMLElementEv
         /** Mixin additional DOM attributes. */
         mixinDOMAttributes(
             Input,
+            DirnameAttr<HTMLInputElement>,
             NameAttr<HTMLInputElement>,
             ValueAttr<HTMLInputElement>,
             NativeDisabledAttr<HTMLInputElement>,
@@ -51,6 +53,7 @@ export abstract class Input<EventMap extends HTMLElementEventMap = HTMLElementEv
 
 /** Augment class definition with the DOM attributes introduced by `mixinDOMAttributes()` above. */
 export interface Input<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
+    DirnameAttr<HTMLInputElement, EventMap>,
     NameAttr<HTMLInputElement, EventMap>,
     ValueAttr<HTMLInputElement, EventMap>,
     NativeDisabledAttr<HTMLInputElement, EventMap>,

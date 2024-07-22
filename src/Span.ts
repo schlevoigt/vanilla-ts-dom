@@ -11,7 +11,7 @@ export class Span<EventMap extends HTMLElementEventMap = HTMLElementEventMap> ex
      */
     constructor(...phrase: Phrase[]) {
         super("span");
-        !phrase || this.phrase(...phrase);
+        phrase.length === 0 || this.phrase(...phrase);
     }
 }
 

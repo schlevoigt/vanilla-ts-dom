@@ -15,7 +15,7 @@ export class LiOl<EventMap extends HTMLElementEventMap = HTMLElementEventMap> ex
         value !== undefined
             ? this.value(value)
             : undefined;
-        !phrase || this.phrase(...phrase);
+        phrase.length === 0 || this.phrase(...phrase);
     }
 
     static {
