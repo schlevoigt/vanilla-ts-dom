@@ -14,11 +14,11 @@ export interface ISelectValues {
 /**
  * Select component (`<select>`).
  */
-export class Select extends ElementComponentWithChildren<HTMLSelectElement> { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
+export class Select<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends ElementComponentWithChildren<HTMLSelectElement, EventMap> { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
     protected _values: ISelectValues[];
 
     /**
-     * Builds the input component.
+     * Create Select component.
      * @param values The values to be displayed in the select.
      * @param id The id (attribute) of the select.
      * @param value The value of the select.
@@ -122,26 +122,28 @@ export class Select extends ElementComponentWithChildren<HTMLSelectElement> { //
         this._dom.selectedIndex = v;
         return this;
     }
+
+    static {
+        /** Mixin additional DOM attributes. */
+        mixinDOMAttributes(
+            Select,
+            NameAttr<HTMLSelectElement>,
+            ValueAttr<HTMLSelectElement>,
+            NativeDisabledAttr<HTMLSelectElement>,
+            RequiredAttr<HTMLSelectElement>
+        );
+    }
 }
 
-/** Mixin additional DOM attributes */
-mixinDOMAttributes(
-    Select,
-    NameAttr<HTMLSelectElement>,
-    ValueAttr<HTMLSelectElement>,
-    NativeDisabledAttr<HTMLSelectElement>,
-    RequiredAttr<HTMLSelectElement>
-);
-
 /** Augment class definition with the DOM attributes introduced by `mixinDOMAttributes()` above. */
-export interface Select extends // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
-    NameAttr<HTMLSelectElement>,
-    ValueAttr<HTMLSelectElement>,
-    NativeDisabledAttr<HTMLSelectElement>,
-    RequiredAttr<HTMLSelectElement> { }
+export interface Select<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
+    NameAttr<HTMLSelectElement, EventMap>,
+    ValueAttr<HTMLSelectElement, EventMap>,
+    NativeDisabledAttr<HTMLSelectElement, EventMap>,
+    RequiredAttr<HTMLSelectElement, EventMap> { }
 
 /**
- * Factory for `<select>` based components.
+ * Factory for Select components.
  */
 export class SelectFactory<T> extends ComponentFactory<Select> {
     /**

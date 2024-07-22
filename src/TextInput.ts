@@ -6,9 +6,9 @@ import { Input } from "./Input.js";
  * Text input component (`<input type="text">`) extended with  `MinLength`, `MaxLength` `DataList`
  * and `Placeholder` getters/setters and set methods.
  */
-export class TextInput extends Input { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
+export class TextInput<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends Input<EventMap> { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
     /**
-     * Builds the input component.
+     * Create TextInput component.
      * @param id The id (attribute) of the text input.
      * @param value The value of the text input.
      * @param name The name (attribute) of the text input.
@@ -16,28 +16,30 @@ export class TextInput extends Input { // eslint-disable-line @typescript-eslint
     constructor(id?: string, value?: string, name?: string) {
         super("text", id, value, name);
     }
+
+    static {
+        /** Mixin additional DOM attributes. */
+        mixinDOMAttributes(
+            TextInput,
+            MinMaxLengthAttr<HTMLInputElement>,
+            PlaceholderAttr<HTMLInputElement>,
+            DataListAttr<HTMLInputElement>
+        );
+    }
 }
 
-/** Mixin additional DOM attributes */
-mixinDOMAttributes(
-    TextInput,
-    MinMaxLengthAttr<HTMLInputElement>,
-    PlaceholderAttr<HTMLInputElement>,
-    DataListAttr<HTMLInputElement>
-);
-
 /** Augment class definition with the DOM attributes introduced by `mixinDOMAttributes()` above. */
-export interface TextInput extends // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
-    MinMaxLengthAttr<HTMLInputElement>,
-    PlaceholderAttr<HTMLInputElement>,
-    DataListAttr<HTMLInputElement> { }
+export interface TextInput<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
+    MinMaxLengthAttr<HTMLInputElement, EventMap>,
+    PlaceholderAttr<HTMLInputElement, EventMap>,
+    DataListAttr<HTMLInputElement, EventMap> { }
 
 /**
- * Factory for `<input type="text">` components.
+ * Factory for TextInput components.
  */
 export class TextInputFactory<T> extends ComponentFactory<TextInput> {
     /**
-     * Create and return TextInput component.
+     * Create, set up and return TextInput component.
      * @param id The id (attribute) of the text input.
      * @param value The value of the text input.
      * @param name The name (attribute) of the text input.

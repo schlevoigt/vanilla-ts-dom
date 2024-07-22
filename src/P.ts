@@ -1,31 +1,38 @@
-import { ComponentFactory, ElementComponentWithChildren } from "@vanilla-ts/core";
+import { ComponentFactory, ElementComponentWithChildren, Phrase } from "@vanilla-ts/core";
 
 
 /**
  * Paragraph component (`<p>`).
  */
-export class P extends ElementComponentWithChildren<HTMLParagraphElement> {
+export class P<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends ElementComponentWithChildren<HTMLParagraphElement, EventMap> {
     /**
-     * Create `<p>` component.
-     * @param text The text content for the p element.
+     * Create P component.
+     * @param phrase The phrasing content for the `<p>` element.
      */
-    constructor(text?: string) {
+    constructor(...phrase: Phrase[]) {
         super("p");
-        !text || this.text(text);
+        !phrase || this.phrase(...phrase);
     }
 }
 
 /**
- * Factory for `<p>` based components.
+ * Factory for P components.
  */
 export class PFactory<T> extends ComponentFactory<P> {
     /**
      * Create, set up and return P component.
-     * @param text The text content for the p element.
+     * @param phrase The phrasing content for the `<p>` element.
      * @param data Optional arbitrary data passed to the `setupComponent()` function of the factory.
      * @returns P component.
      */
-    public p(text?: string, data?: T): P {
-        return this.setupComponent(new P(text), data);
+    public p(phrase?: Phrase | Phrase[], data?: T): P {
+        return this.setupComponent(
+            !phrase
+                ? new P()
+                : Array.isArray(phrase)
+                    ? new P(...phrase)
+                    : new P(phrase),
+            data
+        );
     }
 }

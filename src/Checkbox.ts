@@ -14,9 +14,9 @@ export interface CheckboxEventMap extends HTMLElementEventMap {
  * Checkbox component (`<input type="checkbox">`) extended with a 'Checked' getter/setter and set
  * method and also with a custom event `checked` that signals checking/unchecking the checkbox.
  */
-export class Checkbox extends Input<CheckboxEventMap> { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
+export class Checkbox<EventMap extends CheckboxEventMap = CheckboxEventMap> extends Input<EventMap> { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
     /**
-     * Builds the checkbox component.
+     * Create Checkbox component.
      * @param id The id (attribute) of the checkbox.
      * @param value The value of the checkbox.
      * @param name The name (attribute) of the checkbox.
@@ -25,7 +25,7 @@ export class Checkbox extends Input<CheckboxEventMap> { // eslint-disable-line @
     constructor(id?: string, value?: string, name?: string, checked?: boolean) {
         super("checkbox", id, value, name);
         this._dom.checked = checked ?? false;
-        this.on("change", () => this._dom.dispatchEvent(new CheckedEvent("checked", this, { Checked: this._dom.checked }))); // eslint-disable-line jsdoc/require-jsdoc
+        this.on("change", () => this.emit(new CheckedEvent("checked", this, { Checked: this._dom.checked }))); // eslint-disable-line jsdoc/require-jsdoc
     }
 
     /**
@@ -67,24 +67,26 @@ export class Checkbox extends Input<CheckboxEventMap> { // eslint-disable-line @
     public override readonly(_v: boolean): this {
         return this;
     }
+
+    static {
+        /** Mixin additional DOM attributes. */
+        mixinDOMAttributes(
+            Checkbox,
+            CheckedAttr<HTMLInputElement, CheckboxEventMap>
+        );
+    }
 }
 
-/** Mixin additional DOM attributes */
-mixinDOMAttributes(
-    Checkbox,
-    CheckedAttr<HTMLInputElement, CheckboxEventMap>
-);
-
 /** Augment class definition with the DOM attributes introduced by `mixinDOMAttributes()` above. */
-export interface Checkbox extends // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
-    CheckedAttr<HTMLInputElement, CheckboxEventMap> { }
+export interface Checkbox<EventMap extends CheckboxEventMap = CheckboxEventMap> extends // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
+    CheckedAttr<HTMLInputElement, EventMap> { }
 
 /**
- * Factory for `<input type="checkbox">` components.
+ * Factory for Checkbox components (`<input type="checkbox">`).
  */
 export class CheckboxFactory<T> extends ComponentFactory<Checkbox> {
     /**
-     * Create and return Checkbox component.
+     * Create, set up and return Checkbox component.
      * @param id The id (attribute) of the checkbox.
      * @param value The value of the checkbox.
      * @param name The name (attribute) of the checkbox.

@@ -28,9 +28,9 @@ export enum TemporalType {
  * Input component (`<input>`) for temporal types (`date`, `datetime-local`, `time` etc.), extended
  * with `Min`, `Min`, `Step` and 'DataList' getters/setters and set methods.
  */
-export class TemporalInput extends Input { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
+export class TemporalInput<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends Input<EventMap> { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
     /**
-     * Builds the input component.
+     * Create TemporalInput component.
      * @param temporalType The type (attribute) of the temporal input.
      * @param id The id (attribute) of the temporal input.
      * @param value The value of the temporal input.
@@ -90,28 +90,30 @@ export class TemporalInput extends Input { // eslint-disable-line @typescript-es
         this._dom.stepDown(n);
         return this;
     }
+
+    static {
+        /** Mixin additional DOM attributes. */
+        mixinDOMAttributes(
+            TemporalInput,
+            MinMaxAttr<HTMLInputElement>,
+            StepAttr<HTMLInputElement>,
+            DataListAttr<HTMLInputElement>
+        );
+    }
 }
 
-/** Mixin additional DOM attributes */
-mixinDOMAttributes(
-    TemporalInput,
-    MinMaxAttr<HTMLInputElement>,
-    StepAttr<HTMLInputElement>,
-    DataListAttr<HTMLInputElement>
-);
-
 /** Augment class definition with the DOM attributes introduced by `mixinDOMAttributes()` above. */
-export interface TemporalInput extends // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
-    MinMaxAttr<HTMLInputElement>,
-    StepAttr<HTMLInputElement>,
-    DataListAttr<HTMLInputElement> { }
+export interface TemporalInput<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
+    MinMaxAttr<HTMLInputElement, EventMap>,
+    StepAttr<HTMLInputElement, EventMap>,
+    DataListAttr<HTMLInputElement, EventMap> { }
 
 /**
- * Factory for temporal `<input>` components.
+ * Factory for TemporalInput components.
  */
 export class TemporalInputFactory<T> extends ComponentFactory<TemporalInput> {
     /**
-     * Create and return TemporalInput component.
+     * Create, set up and return TemporalInput component.
      * @param temporalType The type (attribute) of the temporal input.
      * @param id The id (attribute) of the temporal input.
      * @param value The value of the temporal input.

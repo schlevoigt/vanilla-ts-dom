@@ -4,13 +4,13 @@ import { AltAttr, ComponentFactory, ElementComponentVoid, LoadingAttr, SrcAttr, 
 /**
  * Img component (`<img>`).
  */
-export class Img extends ElementComponentVoid<HTMLImageElement> { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
+export class Img<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends ElementComponentVoid<HTMLImageElement, EventMap> { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
     protected naturalWidth: number = 0;
     protected naturalHeight: number = 0;
     protected _scale: number = 0;
 
     /**
-     * Create `<img>` component.
+     * Create Img component.
      * @param src The source/URL of the image.
      * @param width The width of the image.
      * @param height The height of the image.
@@ -93,26 +93,28 @@ export class Img extends ElementComponentVoid<HTMLImageElement> { // eslint-disa
         this.src("");
         super.dispose();
     }
+
+    static {
+        /** Mixin additional DOM attributes. */
+        mixinDOMAttributes(
+            Img,
+            SrcAttr<HTMLImageElement>,
+            AltAttr<HTMLImageElement>,
+            WidthHeightAttr<HTMLImageElement>,
+            LoadingAttr<HTMLImageElement>
+        );
+    }
 }
 
-/** Mixin additional DOM attributes */
-mixinDOMAttributes(
-    Img,
-    SrcAttr<HTMLImageElement>,
-    AltAttr<HTMLImageElement>,
-    WidthHeightAttr<HTMLImageElement>,
-    LoadingAttr<HTMLImageElement>
-);
-
 /** Augment class definition with the DOM attributes introduced by `mixinDOMAttributes()` above. */
-export interface Img extends // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
-    SrcAttr<HTMLImageElement>,
-    AltAttr<HTMLImageElement>,
-    WidthHeightAttr<HTMLImageElement>,
-    LoadingAttr<HTMLImageElement> { }
+export interface Img<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
+    SrcAttr<HTMLImageElement, EventMap>,
+    AltAttr<HTMLImageElement, EventMap>,
+    WidthHeightAttr<HTMLImageElement, EventMap>,
+    LoadingAttr<HTMLImageElement, EventMap> { }
 
 /**
- * Factory for `<img>` based components.
+ * Factory for Img components.
  */
 export class ImgFactory<T> extends ComponentFactory<Img> {
     /**

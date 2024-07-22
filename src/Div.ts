@@ -1,28 +1,38 @@
-import { ComponentFactory, ElementComponentWithChildren } from "@vanilla-ts/core";
+import { ComponentFactory, ElementComponentWithChildren, Phrase } from "@vanilla-ts/core";
 
 
 /**
  * Div component (`<div>`).
  */
-export class Div extends ElementComponentWithChildren<HTMLDivElement> {
+export class Div<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends ElementComponentWithChildren<HTMLDivElement, EventMap> {
     /**
-     * Create `<div>` component.
+     * Create Div component.
+     * @param phrase The phrasing content for the `<div>` element.
      */
-    constructor() {
+    constructor(...phrase: Phrase[]) {
         super("div");
+        !phrase || this.phrase(...phrase);
     }
 }
 
 /**
- * Factory for `<div>` based components.
+ * Factory for Div components.
  */
 export class DivFactory<T> extends ComponentFactory<Div> {
     /**
      * Create, set up and return Div component.
+     * @param phrase The phrasing content for the `<div>` element.
      * @param data Optional arbitrary data passed to the `setupComponent()` function of the factory.
      * @returns Div component.
      */
-    public div(data?: T): Div {
-        return this.setupComponent(new Div(), data);
+    public div(phrase?: Phrase | Phrase[], data?: T): Div {
+        return this.setupComponent(
+            !phrase
+                ? new Div()
+                : Array.isArray(phrase)
+                    ? new Div(...phrase)
+                    : new Div(phrase),
+            data
+        );
     }
 }

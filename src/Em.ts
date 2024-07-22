@@ -1,31 +1,38 @@
-import { ComponentFactory, ElementComponentWithChildren } from "@vanilla-ts/core";
+import { ComponentFactory, ElementComponentWithChildren, Phrase } from "@vanilla-ts/core";
 
 
 /**
  * Em component (`<em>`).
  */
-export class Em extends ElementComponentWithChildren<HTMLElement> {
+export class Em<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends ElementComponentWithChildren<HTMLElement, EventMap> {
     /**
-     * Create `<em>` component.
-     * @param text The text content for the em element.
+     * Create Em component.
+     * @param phrase The phrasing content for the `<em>` element.
      */
-    constructor(text?: string) {
+    constructor(...phrase: Phrase[]) {
         super("em");
-        !text || this.text(text);
+        !phrase || this.phrase(...phrase);
     }
 }
 
 /**
- * Factory for `<em>` based components.
+ * Factory for Em components.
  */
 export class EmFactory<T> extends ComponentFactory<Em> {
     /**
      * Create, set up and return Em component.
-     * @param text The text content for the em element.
+     * @param phrase The phrasing content for the `<em>` element.
      * @param data Optional arbitrary data passed to the `setupComponent()` function of the factory.
      * @returns Em component.
      */
-    public em(text?: string, data?: T): Em {
-        return this.setupComponent(new Em(text), data);
+    public em(phrase?: Phrase | Phrase[], data?: T): Em {
+        return this.setupComponent(
+            !phrase
+                ? new Em()
+                : Array.isArray(phrase)
+                    ? new Em(...phrase)
+                    : new Em(phrase),
+            data
+        );
     }
 }

@@ -1,41 +1,52 @@
-import { ComponentFactory, ElementComponentWithChildren, NativeDisabledAttr, mixinDOMAttributes } from "@vanilla-ts/core";
+import { ComponentFactory, ElementComponentWithChildren, NameAttr, NativeDisabledAttr, Phrase, ValueAttr, mixinDOMAttributes } from "@vanilla-ts/core";
 
 
 /**
  * Button component (`<button>`).
  */
-export class Button extends ElementComponentWithChildren<HTMLButtonElement> { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
+export class Button<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends ElementComponentWithChildren<HTMLButtonElement, EventMap> { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
     /**
-     * Create `<button>` component.
-     * @param caption The caption for the button.
+     * Create Button component.
+     * @param phrase The phrasing content for the `<button>` element.
      */
-    constructor(caption?: string) {
+    constructor(...phrase: Phrase[]) {
         super("button");
-        !caption || this.text(caption);
+        !phrase || this.phrase(...phrase);
+    }
+
+    static {
+        /** Mixin additional DOM attributes. */
+        mixinDOMAttributes(
+            Button,
+            NameAttr<HTMLButtonElement>,
+            NativeDisabledAttr<HTMLButtonElement>,
+            ValueAttr<HTMLButtonElement>
+        );
     }
 }
 
-/** Mixin additional DOM attributes */
-mixinDOMAttributes(
-    Button,
-    NativeDisabledAttr<HTMLButtonElement>
-);
-
 /** Augment class definition with the DOM attributes introduced by `mixinDOMAttributes()` above. */
-export interface Button extends // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging,jsdoc/require-jsdoc
-    NativeDisabledAttr<HTMLButtonElement> { }
+export interface Button<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging,jsdoc/require-jsdoc
+    NativeDisabledAttr<HTMLButtonElement, EventMap> { }
 
 /**
- * Factory for `<button>` based components.
+ * Factory for Button components.
  */
 export class ButtonFactory<T> extends ComponentFactory<Button> {
     /**
      * Create, set up and return Button component.
-     * @param caption The button caption.
+     * @param phrase The phrasing content for the `<button>` element.
      * @param data Optional arbitrary data passed to the `setupComponent()` function of the factory.
      * @returns Button component.
      */
-    public button(caption?: string, data?: T): Button {
-        return this.setupComponent(new Button(caption), data);
+    public button(phrase?: Phrase | Phrase[], data?: T): Button {
+        return this.setupComponent(
+            !phrase
+                ? new Button()
+                : Array.isArray(phrase)
+                    ? new Button(...phrase)
+                    : new Button(phrase),
+            data
+        );
     }
 }
