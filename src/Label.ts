@@ -13,7 +13,7 @@ export class Label<EventMap extends HTMLElementEventMap = HTMLElementEventMap> e
     constructor(for_?: string, ...phrase: Phrase[]) {
         super("label");
         !for_ || this.for(for_);
-        !phrase || this.phrase(...phrase);
+        phrase.length === 0 || this.phrase(...phrase);
     }
 
     /**
@@ -29,7 +29,7 @@ export class Label<EventMap extends HTMLElementEventMap = HTMLElementEventMap> e
 
     /**
      * Set for attribute of underlying HTML element.
-     * @param v The for attribute to be set or `null` to remove the attribute.
+     * @param v The `for` attribute to be set or `null` to remove the attribute.
      * @returns This instance.
      */
     public for(v: NullableString): this {

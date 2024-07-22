@@ -1,4 +1,4 @@
-import { AltAttr, ComponentFactory, ElementComponentVoid, LoadingAttr, SrcAttr, WidthHeightAttr, mixinDOMAttributes } from "@vanilla-ts/core";
+import { AltAttr, ComponentFactory, CrossOrginAttr, ElementComponentVoid, LoadingAttr, ReferrerPolicyAttr, SrcAttr, WidthHeightAttr, mixinDOMAttributes } from "@vanilla-ts/core";
 
 
 /**
@@ -38,6 +38,48 @@ export class Img<EventMap extends HTMLElementEventMap = HTMLElementEventMap> ext
                 }
             })
             .src(src);
+    }
+
+    /**
+     * Get/set `decoding` attribute value of the component.
+     */
+    public get Decoding(): "async" | "sync" | "auto" {
+        return this._dom.decoding;
+    }
+    /** @inheritdoc */
+    public set Decoding(v: "async" | "sync" | "auto") {
+        this._dom.decoding = v;
+    }
+
+    /**
+     * Set `decoding` attribute value of the component.
+     * @param v The value to be set.
+     * @returns This instance.
+     */
+    public decoding(v: "async" | "sync" | "auto"): this {
+        this._dom.decoding = v;
+        return this;
+    }
+
+    /**
+     * Get/set `fetchPriority` attribute value of the component.
+     */
+    public get FetchPriority(): "high" | "low" | "auto" {
+        return <"high" | "low" | "auto">this._dom.fetchPriority;
+    }
+    /** @inheritdoc */
+    public set FetchPriority(v: "high" | "low" | "auto") {
+        this._dom.fetchPriority = v;
+    }
+
+    /**
+     * Set `fetchPriority` attribute value of the component.
+     * @param v The value to be set.
+     * @returns This instance.
+     */
+    public fetchPriority(v: "high" | "low" | "auto"): this {
+        this._dom.fetchPriority = v;
+        return this;
     }
 
     /**
@@ -98,20 +140,24 @@ export class Img<EventMap extends HTMLElementEventMap = HTMLElementEventMap> ext
         /** Mixin additional DOM attributes. */
         mixinDOMAttributes(
             Img,
+            CrossOrginAttr<HTMLImageElement>,
             SrcAttr<HTMLImageElement>,
             AltAttr<HTMLImageElement>,
             WidthHeightAttr<HTMLImageElement>,
-            LoadingAttr<HTMLImageElement>
+            LoadingAttr<HTMLImageElement>,
+            ReferrerPolicyAttr<HTMLImageElement>
         );
     }
 }
 
 /** Augment class definition with the DOM attributes introduced by `mixinDOMAttributes()` above. */
 export interface Img<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
+    CrossOrginAttr<HTMLImageElement, EventMap>,
     SrcAttr<HTMLImageElement, EventMap>,
     AltAttr<HTMLImageElement, EventMap>,
     WidthHeightAttr<HTMLImageElement, EventMap>,
-    LoadingAttr<HTMLImageElement, EventMap> { }
+    LoadingAttr<HTMLImageElement, EventMap>,
+    ReferrerPolicyAttr<HTMLImageElement, EventMap> { }
 
 /**
  * Factory for Img components.

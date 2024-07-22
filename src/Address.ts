@@ -11,7 +11,7 @@ export class Address<EventMap extends HTMLElementEventMap = HTMLElementEventMap>
      */
     constructor(...phrase: Phrase[]) {
         super("address");
-        !phrase || this.phrase(...phrase);
+        phrase.length === 0 || this.phrase(...phrase);
     }
 }
 

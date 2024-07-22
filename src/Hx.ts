@@ -11,7 +11,7 @@ export class H1<EventMap extends HTMLElementEventMap = HTMLElementEventMap> exte
      */
     constructor(...phrase: Phrase[]) {
         super("h1");
-        !phrase || this.phrase(...phrase);
+        phrase.length === 0 || this.phrase(...phrase);
     }
 }
 
@@ -25,7 +25,7 @@ export class H2<EventMap extends HTMLElementEventMap = HTMLElementEventMap> exte
      */
     constructor(...phrase: Phrase[]) {
         super("h2");
-        !phrase || this.phrase(...phrase);
+        phrase.length === 0 || this.phrase(...phrase);
     }
 }
 
@@ -39,7 +39,7 @@ export class H3<EventMap extends HTMLElementEventMap = HTMLElementEventMap> exte
      */
     constructor(...phrase: Phrase[]) {
         super("h3");
-        !phrase || this.phrase(...phrase);
+        phrase.length === 0 || this.phrase(...phrase);
     }
 }
 
@@ -53,7 +53,7 @@ export class H4<EventMap extends HTMLElementEventMap = HTMLElementEventMap> exte
      */
     constructor(...phrase: Phrase[]) {
         super("h4");
-        !phrase || this.phrase(...phrase);
+        phrase.length === 0 || this.phrase(...phrase);
     }
 }
 
@@ -67,7 +67,7 @@ export class H5<EventMap extends HTMLElementEventMap = HTMLElementEventMap> exte
      */
     constructor(...phrase: Phrase[]) {
         super("h5");
-        !phrase || this.phrase(...phrase);
+        phrase.length === 0 || this.phrase(...phrase);
     }
 }
 
@@ -81,7 +81,7 @@ export class H6<EventMap extends HTMLElementEventMap = HTMLElementEventMap> exte
      */
     constructor(...phrase: Phrase[]) {
         super("h6");
-        !phrase || this.phrase(...phrase);
+        phrase.length === 0 || this.phrase(...phrase);
     }
 }
 

@@ -1,4 +1,4 @@
-import { ComponentFactory, ElementComponentWithChildren, MinMaxLengthAttr, mixinDOMAttributes, NameAttr, NativeDisabledAttr, PlaceholderAttr, ReadonlyAttr, RequiredAttr, ValueAttr } from "@vanilla-ts/core";
+import { ComponentFactory, DirnameAttr, ElementComponentWithChildren, MinMaxLengthAttr, mixinDOMAttributes, NameAttr, NativeDisabledAttr, PlaceholderAttr, ReadonlyAttr, RequiredAttr, ValueAttr } from "@vanilla-ts/core";
 
 
 /**
@@ -96,6 +96,7 @@ export class TextArea<EventMap extends HTMLElementEventMap = HTMLElementEventMap
         /** Mixin additional DOM attributes. */
         mixinDOMAttributes(
             TextArea,
+            DirnameAttr<HTMLTextAreaElement>,
             MinMaxLengthAttr<HTMLTextAreaElement>,
             NameAttr<HTMLTextAreaElement>,
             PlaceholderAttr<HTMLTextAreaElement>,
@@ -109,6 +110,7 @@ export class TextArea<EventMap extends HTMLElementEventMap = HTMLElementEventMap
 
 /** Augment class definition with the DOM attributes introduced by `mixinDOMAttributes()` above. */
 export interface TextArea<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
+    DirnameAttr<HTMLTextAreaElement, EventMap>,
     MinMaxLengthAttr<HTMLTextAreaElement, EventMap>,
     NameAttr<HTMLTextAreaElement, EventMap>,
     PlaceholderAttr<HTMLTextAreaElement, EventMap>,
