@@ -92,6 +92,15 @@ export class TextArea<EventMap extends HTMLElementEventMap = HTMLElementEventMap
         return this;
     }
 
+    /**
+     * Selects all text in the textarea.
+     * @returns This instance.
+     */
+    public select(): this {
+        this._dom.select();
+        return this;
+    }
+
     static {
         /** Mixin additional DOM attributes. */
         mixinDOMAttributes(

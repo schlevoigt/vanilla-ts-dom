@@ -17,6 +17,15 @@ export class TextInput<EventMap extends HTMLElementEventMap = HTMLElementEventMa
         super("text", id, value, name);
     }
 
+    /**
+     * Selects all text in the text input.
+     * @returns This instance.
+     */
+    public select(): this {
+        this._dom.select();
+        return this;
+    }
+
     static {
         /** Mixin additional DOM attributes. */
         mixinDOMAttributes(

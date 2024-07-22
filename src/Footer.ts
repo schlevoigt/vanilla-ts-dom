@@ -20,10 +20,10 @@ export class Footer<EventMap extends HTMLElementEventMap = HTMLElementEventMap> 
  */
 export class FooterFactory<T> extends ComponentFactory<Footer> {
     /**
-     * Create, set up and return Header component.
+     * Create, set up and return Footer component.
      * @param phrase The phrasing content for the `<footer>` element.
      * @param data Optional arbitrary data passed to the `setupComponent()` function of the factory.
-     * @returns Header component.
+     * @returns Footer component.
      */
     public footer(phrase?: Phrase | Phrase[], data?: T): Footer {
         return this.setupComponent(
