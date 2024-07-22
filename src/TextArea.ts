@@ -1,4 +1,4 @@
-import { ComponentFactory, ElementComponentWithChildren, MinMaxLengthAttr, mixinDOMAttributes, NameAttr, NativeDisabledAttr, PlaceholderAttr, ReadonlyAttr, RequiredAttr } from "@vanilla-ts/core";
+import { ComponentFactory, ElementComponentWithChildren, MinMaxLengthAttr, mixinDOMAttributes, NameAttr, NativeDisabledAttr, PlaceholderAttr, ReadonlyAttr, RequiredAttr, ValueAttr } from "@vanilla-ts/core";
 
 
 /**
@@ -22,7 +22,7 @@ export class TextArea extends ElementComponentWithChildren<HTMLTextAreaElement> 
     }
 
     /**
-     * Get/set the `rows` attribute.
+     * Get/set the `rows` attribute of the component.
      * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea#rows
      */
     public get Rows(): number {
@@ -34,8 +34,8 @@ export class TextArea extends ElementComponentWithChildren<HTMLTextAreaElement> 
     }
 
     /**
-     * Get/set the `rows` attribute.
-     * @param v The new value for the `rows` attribute.
+     * Set the `rows` attribute of the component.
+     * @param v The value to be set.
      * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea#rows
      * @returns This instance.
      */
@@ -45,7 +45,7 @@ export class TextArea extends ElementComponentWithChildren<HTMLTextAreaElement> 
     }
 
     /**
-     * Get/set the `cols` attribute.
+     * Get/set the `cols` attribute of the component.
      * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea#cols
      */
     public get Cols(): number {
@@ -57,13 +57,34 @@ export class TextArea extends ElementComponentWithChildren<HTMLTextAreaElement> 
     }
 
     /**
-     * Get/set the `cols` attribute.
-     * @param v The new value for the `cols` attribute.
+     * Set the `cols` attribute of the component.
+     * @param v The value to be set.
      * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea#cols
      * @returns This instance.
      */
     public cols(v: number): this {
         this._dom.cols = Math.max(v, 1);
+        return this;
+    }
+
+    /**
+     * Get/set the `defaultValue` attribute of the component.
+     */
+    public get DefaultValue(): string {
+        return this._dom.defaultValue;
+    }
+    /** @inheritdoc */
+    public set DefaultValue(v: string) {
+        this._dom.defaultValue = v;
+    }
+
+    /**
+     * Set the `defaultValue` attribute of the component.
+     * @param v The value to be set.
+     * @returns This instance.
+     */
+    public defaultValue(v: string): this {
+        this._dom.defaultValue = v;
         return this;
     }
 }
@@ -76,7 +97,8 @@ mixinDOMAttributes(
     PlaceholderAttr<HTMLTextAreaElement>,
     NativeDisabledAttr<HTMLTextAreaElement>,
     ReadonlyAttr<HTMLTextAreaElement>,
-    RequiredAttr<HTMLTextAreaElement>
+    RequiredAttr<HTMLTextAreaElement>,
+    ValueAttr<HTMLTextAreaElement>
 );
 
 /** Augment class definition with the DOM attributes introduced by `mixinDOMAttributes()` above. */
@@ -86,7 +108,8 @@ export interface TextArea extends // eslint-disable-line @typescript-eslint/no-u
     PlaceholderAttr<HTMLTextAreaElement>,
     NativeDisabledAttr<HTMLTextAreaElement>,
     ReadonlyAttr<HTMLTextAreaElement>,
-    RequiredAttr<HTMLTextAreaElement> { }
+    RequiredAttr<HTMLTextAreaElement>,
+    ValueAttr<HTMLTextAreaElement> { }
 
 /**
  * Factory for `<textarea>` based components.
