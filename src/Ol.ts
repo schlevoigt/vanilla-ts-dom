@@ -15,7 +15,7 @@ export class Ol<EventMap extends HTMLElementEventMap = HTMLElementEventMap> exte
      * Create Ol component.
      * @param listItems Ordered list items to be appended to this list.
      */
-    constructor(listItems: LiOl[]) {
+    constructor(listItems: (LiOl | undefined | null)[]) {
         super("ol");
         this.append(...listItems);
     }

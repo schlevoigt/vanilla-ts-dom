@@ -65,7 +65,7 @@ export class Img<EventMap extends HTMLElementEventMap = HTMLElementEventMap> ext
      * Get/set `fetchPriority` attribute value of the component.
      */
     public get FetchPriority(): "high" | "low" | "auto" {
-        return <"high" | "low" | "auto">this._dom.fetchPriority;
+        return this._dom.fetchPriority;
     }
     /** @inheritdoc */
     public set FetchPriority(v: "high" | "low" | "auto") {
