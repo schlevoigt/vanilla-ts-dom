@@ -17,6 +17,7 @@ export * from "./LiUl.js";
 export * from "./Ol.js";
 export * from "./P.js";
 export * from "./RadioButton.js";
+export * from "./Section.js";
 export * from "./Select.js";
 export * from "./Span.js";
 export * from "./Strong.js";
