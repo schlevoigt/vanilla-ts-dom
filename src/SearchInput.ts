@@ -3,7 +3,7 @@ import { Input } from "./Input.js";
 
 
 /**
- * Text input component (`<input type="search">`) extended with  `MinLength`, `MaxLength` `DataList`
+ * Search input component (`<input type="search">`) extended with  `MinLength`, `MaxLength` `DataList`
  * and `Placeholder` getters/setters and set methods.
  */
 export class SearchInput<EventMap extends HTMLElementEventMap = HTMLElementEventMap> extends Input<EventMap> { // eslint-disable-line @typescript-eslint/no-unsafe-declaration-merging
